@@ -7,7 +7,7 @@ from auxillary_sec import StockCheck
 
 BACKGROUND_COLOR = "#949494"
 
-domain = ["Masonry", "Plumbing", "Electrical", "Tiling", "Ceiling", "Painting", "Equipments", "Water Proofing", "Others", "Scaffolding"]
+domain = [("Ceiling", 1), ("Equipments", 2),("Electricity", 3), ("Masonry", 4),("Plumbing", 5), ("Painting", 6), ("Scaffolding", 7),("Tiling" , 8), ("Waterproofing", 9), ("Others", 10)]
 
 class EntryTab():
 
@@ -54,28 +54,18 @@ class EntryTab():
         self.select_btn = Button(master=self.frame, text="Select item", font=("Century Gothic", 8, "bold"), command=self.selected)
         self.cancel_btn = Button(master=self.frame, text="Cancel", font=("Century Gothic", 8, "bold"), command=self.cancel_item_selection)
 
-
         self.radio_state = IntVar(master=self.frame)
-        self.radiobutton1 = Radiobutton(master=self.frame, text="Ceiling", value=1, variable=self.radio_state, bg=BACKGROUND_COLOR)
-        self.radiobutton2 = Radiobutton(master=self.frame, text="Equipments", value=2, variable=self.radio_state, bg=BACKGROUND_COLOR)
-        self.radiobutton3 = Radiobutton(master=self.frame, text="Electricity", value=3, variable=self.radio_state, bg=BACKGROUND_COLOR)
-        self.radiobutton4 = Radiobutton(master=self.frame, text="Masonry", value=4, variable=self.radio_state, bg=BACKGROUND_COLOR)
-        self.radiobutton5 = Radiobutton(master=self.frame, text="Plumbing", value=5, variable=self.radio_state, bg=BACKGROUND_COLOR)
-        self.radiobutton6 = Radiobutton(master=self.frame, text="Painting", value=6, variable=self.radio_state, bg=BACKGROUND_COLOR)
-        self.radiobutton7 = Radiobutton(master=self.frame, text="Scaffolding", value=7, variable=self.radio_state, bg=BACKGROUND_COLOR)
-        self.radiobutton8 = Radiobutton(master=self.frame, text="Tiling", value=8, variable=self.radio_state, bg=BACKGROUND_COLOR)
-        self.radiobutton9 = Radiobutton(master=self.frame, text="Waterproofing", value=9, variable=self.radio_state, bg=BACKGROUND_COLOR)
-        self.radiobutton10 = Radiobutton(master=self.frame, text="Others", value=10, variable=self.radio_state, bg=BACKGROUND_COLOR)
-        self.radiobutton1.place(x=15, y=110)
-        self.radiobutton2.place(x=15, y=150)
-        self.radiobutton3.place(x=15, y=190)
-        self.radiobutton4.place(x=15, y=230)
-        self.radiobutton5.place(x=15, y=270)
-        self.radiobutton6.place(x=15, y=310)
-        self.radiobutton7.place(x=15, y=350)
-        self.radiobutton8.place(x=15, y=390)
-        self.radiobutton9.place(x=15, y=430)
-        self.radiobutton10.place(x=15, y=470)
+        x_n = 15
+        y_n = 110
+
+        self.radio_b_list = []
+
+        for set in domain:
+
+            radiobutton = Radiobutton(master=self.frame, text=set[0], value=set[1], variable=self.radio_state, bg=BACKGROUND_COLOR)
+            radiobutton.place(x=x_n, y=y_n)
+            y_n += 40
+            self.radio_b_list.append(radiobutton)
 
 
 
@@ -126,8 +116,8 @@ class EntryTab():
         self.search_item_btn.config(state="active")
 
         for i in range(len(domain)):
-            if domain[i] == mat_domain:
-                self.radio_state.set(i+1)
+            if domain[i][0] == mat_domain:
+                self.radio_state.set(domain[i][1])
 
         forget(self.find.listbox, self.cancel_btn, self.select_btn)
 

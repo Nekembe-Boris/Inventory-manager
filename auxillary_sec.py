@@ -8,6 +8,8 @@ import os
 selected = "" 
 BACKGROUND_COLOR = "#D3D3D3"
 
+report_type = [("Entry Records", 1), ("Exit Records", 2), ("Ledger Records", 3), ("Current Stock Level", 4)]
+
 class StockCheck():
     """This class is responsible for displaying the Stock Check sections and verifying the current quantity for each material"""
 
@@ -98,14 +100,17 @@ class Report():
 
         self.radio_state = IntVar()
 
-        self.gen_radiobutton1 = Radiobutton(master=frame, text="Entry Records", value=1, variable=self.radio_state, font=("Century Gothic", 10, "bold"), bg=BACKGROUND_COLOR)
-        self.gen_radiobutton2 = Radiobutton(master=frame, text="Exit Records", value=2, variable=self.radio_state, font=("Century Gothic", 10, "bold"), bg=BACKGROUND_COLOR)
-        self.gen_radiobutton3 = Radiobutton(master=frame, text="Ledger Records", value=3, variable=self.radio_state, font=("Century Gothic", 10, "bold"),  bg=BACKGROUND_COLOR)
-        self.gen_radiobutton4 = Radiobutton(master=frame, text="Current Stock Level", value=4, variable=self.radio_state, font=("Century Gothic", 10, "bold"), bg=BACKGROUND_COLOR)
-        self.gen_radiobutton1.place(x=10, y=50)
-        self.gen_radiobutton2.place(x=160, y=50)
-        self.gen_radiobutton3.place(x=310, y=50)
-        self.gen_radiobutton4.place(x=460, y=50)
+        self.rb_list = []
+
+        x_cor = 10
+        y_cor = 50
+
+        for i in range(len(report_type)):
+            gen_radiobutton = Radiobutton(master=frame, text=report_type[i][0], value=report_type[i][1], variable=self.radio_state, font=("Century Gothic", 10, "bold"), bg=BACKGROUND_COLOR)
+            gen_radiobutton.place(x=x_cor, y=y_cor)
+            x_cor += 150
+
+            self.rb_list.append(gen_radiobutton)
 
         self.gen_excel_btn = Button(master=frame, text="EXPORT RECORDS TO MICROSOFT EXCEL",  font=("Century Gothic", 10, "bold"), command=self.generate_excel)
         self.gen_excel_btn.place(x=225, y=120)

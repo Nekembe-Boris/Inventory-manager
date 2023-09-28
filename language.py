@@ -1,4 +1,9 @@
 
+fr_domain = [("Plafond", "Ceiling"),("Équipement", "Equipments"),("Électricité", "Electricity"), ("Maçonnerie", "Masonry"), ("Plomberie", "Plumbing"), ("Peinture", "Painting"), ("Échafaudage", "Scaffolding"), ("Carrelage", "Tiling"), ("Etancheite", "Waterproofing"), ("Autres", "Others")]
+
+fr_report = [("Registres d'Entrée", "Entry Records"), ("Registres des Sorti", "Exit Records"), ("Grand Livre", "Ledger Records"), ("Niveau de stock actuel", "Current Stock Level")]
+
+
 
 def french(entry, exit_sec, stock, report):
     """This function translates all Labels, buttons and radiobuttons to French"""
@@ -12,18 +17,12 @@ def french(entry, exit_sec, stock, report):
     entry.search_item_btn.config(text="cliquez ici si le matériel s'il est déjà en stock")
     entry.entry_cancel_btn.config(text="Annuler la transaction")
     entry.validate_entry_btn.config(text="Valider l'entrée")
-    entry.radiobutton1.config(text="Plafond")
-    entry.radiobutton2.config(text="Équipement")
-    entry.radiobutton3.config(text="Électricité")
-    entry.radiobutton4.config(text="Maçonnerie")
-    entry.radiobutton5.config(text="Plomberie")
-    entry.radiobutton6.config(text="Peinture")
-    entry.radiobutton7.config(text="Échafaudage")
-    entry.radiobutton8.config(text="Carrelage")
-    entry.radiobutton9.config(text="Etancheite")
-    entry.radiobutton10.config(text="Autres")
     entry.select_btn.config(text="Sélectionner")
     entry.cancel_btn.config(text="Annuler")
+
+    for i in range(len(entry.radio_b_list)):
+        entry.radio_b_list[i].config(text=fr_domain[i][0])
+
 
     ###########--------EXIT SECTION------########
     exit_sec.exit_label.config(text="SORTIE")
@@ -48,10 +47,9 @@ def french(entry, exit_sec, stock, report):
 
 
     ##############--------REPORT------###########
-    report.gen_radiobutton1.config(text="Registres d'Entrée")
-    report.gen_radiobutton2.config(text="Registres des Sorti")
-    report.gen_radiobutton3.config(text="Grand Livre")
-    report.gen_radiobutton4.config(text="Niveau de stock actuel")
+    for i in range(len(report.rb_list)):
+        report.rb_list[i].config(text=fr_report[i][0])
+
     report.gen_excel_btn.config(text="EXPORTER DES ENREGISTREMENTS VERS MICROSOFT EXCEL")
 
 
@@ -69,18 +67,11 @@ def english(entry, exit_sec, stock, report):
     entry.search_item_btn.config(text="click here to select material if already in stock")
     entry.entry_cancel_btn.config(text="Cancel transaction")
     entry.validate_entry_btn.config(text="Validate Entry")
-    entry.radiobutton1.config(text="Ceiling")
-    entry.radiobutton2.config(text="Equipments")
-    entry.radiobutton3.config(text="Electricity")
-    entry.radiobutton4.config(text="Masonry")
-    entry.radiobutton5.config(text="Plumbing")
-    entry.radiobutton6.config(text="Painting")
-    entry.radiobutton7.config(text="Scaffolding")
-    entry.radiobutton8.config(text="Tiling")
-    entry.radiobutton9.config(text="Waterproofing")
-    entry.radiobutton10.config(text="Others")
     entry.select_btn.config(text="Select")
     entry.cancel_btn.config(text="Cancel")
+
+    for i in range(len(entry.radio_b_list)):
+        entry.radio_b_list[i].config(text=fr_domain[i][1])   
 
 
     ###########--------EXIT SECTION------########
@@ -106,8 +97,7 @@ def english(entry, exit_sec, stock, report):
 
 
     ##############--------REPORT------###########
-    report.gen_radiobutton1.config(text="Entry Records")
-    report.gen_radiobutton2.config(text="Exit Records")
-    report.gen_radiobutton3.config(text="Ledger Records")
-    report.gen_radiobutton4.config(text="Current Stock Level")
+    for i in range(len(report.rb_list)):
+        report.rb_list[i].config(text=fr_report[i][1])
+        
     report.gen_excel_btn.config(text="EXPORT RECORDS TO MICROSOFT EXCEL")
