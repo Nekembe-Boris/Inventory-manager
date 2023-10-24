@@ -1,8 +1,7 @@
-from tkinter import *
+from tkinter import Frame, END, Listbox
 from tkinter import messagebox
 import pandas
 
-selected = ""
 
 def clear(*args):
     """Clears the text in any entry widget that is passed as an argument"""
@@ -58,14 +57,13 @@ class Search():
         """Gets the name, domain, Unit and Quantity of the selected material and returns them."""
 
         stock_data = pandas.read_csv("./data/Stock_level.csv")
-        
-        global selected
+
         selected = ""
 
         for i in self.listbox.curselection():
             selected = (self.listbox.get(i))
 
-        for (index, row) in stock_data.iterrows():
+        for (_, row) in stock_data.iterrows():
 
             if row.Material == selected:
                 return row.Material, row.Domain, row.Unit, row.Quantity

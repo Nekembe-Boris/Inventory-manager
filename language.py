@@ -1,4 +1,3 @@
-
 fr_domain = [("Plafond", "Ceiling"),("Équipement", "Equipments"),("Électricité", "Electricity"), ("Maçonnerie", "Masonry"), ("Plomberie", "Plumbing"), ("Peinture", "Painting"), ("Échafaudage", "Scaffolding"), ("Carrelage", "Tiling"), ("Etancheite", "Waterproofing"), ("Autres", "Others")]
 
 fr_report = [("Registres d'Entrée", "Entry Records"), ("Registres des Sorti", "Exit Records"), ("Grand Livre", "Ledger Records"), ("Niveau de stock actuel", "Current Stock Level")]

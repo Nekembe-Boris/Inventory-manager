@@ -1,4 +1,4 @@
-from tkinter import *
+from tkinter import Frame, Label, Entry, Button, END
 from tkinter import messagebox
 import datetime
 from functions import clear, forget, get_values, Search
@@ -9,6 +9,11 @@ BACKGROUND_COLOR = "#949494"
 
 domain = ["Masonry", "Plumbing", "Electrical", "Tiling", "Ceiling", "Painting", "Equipments", "Water Proofing", "Others", "Scaffolding"]
 
+FONT1 = ("Century Gothic", 20, "bold")
+FONT2 = ("Century Gothic", 12, "bold")
+FONT3 = ("Century Gothic", 10, "bold")
+FONT4 = ("Century Gothic", 8, "bold")
+
 class ExitTab():
     """This class is responsible for the entire EXIT section"""
     def __init__(self, frame:Frame, search:Search, update:StockCheck):
@@ -17,56 +22,56 @@ class ExitTab():
         self.frame = frame
         self.update = update
 
-        self.exit_label = Label(master=self.frame, text="EXIT", font=("Century Gothic", 20, "bold"), bg=BACKGROUND_COLOR)
+        self.exit_label = Label(master=self.frame, text="EXIT", font=FONT1, bg=BACKGROUND_COLOR)
         self.exit_label.place(x=300, y=0)
 
-        self.exit_material_label = Label(master=self.frame, text="Material: ", font=("Century Gothic", 10, "bold"), bg=BACKGROUND_COLOR)
+        self.exit_material_label = Label(master=self.frame, text="Material: ", font=FONT3, bg=BACKGROUND_COLOR)
         self.exit_material_label.place(x=5, y=70)
 
         self.material_name_entry = Entry(master=self.frame, width=35)
         self.material_name_entry.place(x=110, y=70)
 
-        self.exit_mat_cat_label = Label(master=self.frame, text="Domain: ", font=("Century Gothic", 10, "bold"), bg=BACKGROUND_COLOR)
+        self.exit_mat_cat_label = Label(master=self.frame, text="Domain: ", font=FONT3, bg=BACKGROUND_COLOR)
         self.exit_mat_cat_label.place(x=5, y=130)
 
         self.material_cat = Entry(master=self.frame, width=35)
         self.material_cat.place(x=110, y=130)
 
-        self.material_unit_label = Label(master=self.frame, text="Unit:", font=("Century Gothic", 10, "bold"), bg=BACKGROUND_COLOR)
+        self.material_unit_label = Label(master=self.frame, text="Unit:", font=FONT3, bg=BACKGROUND_COLOR)
         self.material_unit_label.place(x=5, y=190)
 
         self.material_unit = Entry(master=self.frame)
         self.material_unit.place(x=110, y=190)
 
-        self.exit_current_qty_label = Label(master=self.frame, text="Current Qty:", font=("Century Gothic", 10, "bold"), bg=BACKGROUND_COLOR)
+        self.exit_current_qty_label = Label(master=self.frame, text="Current Qty:", font=FONT3, bg=BACKGROUND_COLOR)
         self.exit_current_qty_label.place(x=5, y=250)
 
         self.material_current_qty = Entry(master=self.frame)
         self.material_current_qty.place(x=110, y=250)
 
-        self.exit_qty_label = Label(master=self.frame, text="Exit Qty:", font=("Century Gothic", 10, "bold"), bg=BACKGROUND_COLOR, fg="red")
+        self.exit_qty_label = Label(master=self.frame, text="Exit Qty:", font=FONT3, bg=BACKGROUND_COLOR, fg="red")
         self.exit_qty_label.place(x=5, y=310)
 
         self.material_exit_qty = Entry(master=self.frame, )
         self.material_exit_qty.place(x=110, y=310)
 
-        self.material_exit_description= Label(master=self.frame, text="Enter a concise description of the work to be done with this material:", font=("Century Gothic", 8, "bold"), bg=BACKGROUND_COLOR)
+        self.material_exit_description= Label(master=self.frame, text="Enter a concise description of the work to be done with this material:", font=FONT4, bg=BACKGROUND_COLOR)
         self.material_exit_description.place(x=5, y=370)
 
         self.material_description_entry = Entry(master=self.frame, width=60)
         self.material_description_entry.place(x=5, y=390)
 
-        self.exit_search_item_btn = Button(master=self.frame, text="click here to select material from stock", font=("Century Gothic", 8, "bold"), fg="red", width=35, command=self.stock_search)
+        self.exit_search_item_btn = Button(master=self.frame, text="click here to select material from stock", font=FONT4, fg="red", width=35, command=self.stock_search)
         self.exit_search_item_btn.place(x=5, y=450)
 
-        self.exit_cancel_btn = Button(master=self.frame, text="Cancel transaction", font=("Century Gothic", 8, "bold"), fg="white", bg="red", width=35, command=self.exit_cancel_tran)
+        self.exit_cancel_btn = Button(master=self.frame, text="Cancel transaction", font=FONT4, fg="white", bg="red", width=35, command=self.exit_cancel_tran)
         self.exit_cancel_btn.place(x=5, y=490)
 
-        self.validate_exit_btn = Button(master=self.frame, text="Validate Exit", font=("Century Gothic", 12, "bold"), fg="white", bg="red", width=27, command=self.validate_exit)
+        self.validate_exit_btn = Button(master=self.frame, text="Validate Exit", font=FONT2, fg="white", bg="red", width=27, command=self.validate_exit)
         self.validate_exit_btn.place(x=5, y=530)
 
-        self.select_btn = Button(master=self.frame, text="Select item", font=("Century Gothic", 8, "bold"), command=self.selected)
-        self.cancel_btn = Button(master=self.frame, text="Cancel", font=("Century Gothic", 8, "bold"), command=self.cancel_item_selection)
+        self.select_btn = Button(master=self.frame, text="Select item", font=FONT4, command=self.selected)
+        self.cancel_btn = Button(master=self.frame, text="Cancel", font=FONT4, command=self.cancel_item_selection)
 
 
     def stock_search(self):
@@ -78,7 +83,7 @@ class ExitTab():
         clear(self.material_name_entry, self.material_cat, self.material_unit, self.material_current_qty)
 
         try:
-            stock_data = pandas.read_csv("./data/Stock_level.csv")
+            pandas.read_csv("./data/Stock_level.csv")
         except FileNotFoundError:
             messagebox.showinfo(
             title="Error",
@@ -130,7 +135,7 @@ class ExitTab():
         - Uses the Inventory_check function to update the quantity displayed in the Stock Check section
         """
 
-        item_name, item_cat, unit, qty, exit_qty, description = get_values( self.material_name_entry, self.material_cat, self.material_unit, self.material_current_qty, self.material_exit_qty, self.material_description_entry)
+        item_name, item_cat, unit, qty, exit_qty, description, *_ = get_values( self.material_name_entry, self.material_cat, self.material_unit, self.material_current_qty, self.material_exit_qty, self.material_description_entry)
 
         current_time = datetime.datetime.now()
         date = current_time.strftime("%d-%b-%Y")
@@ -180,7 +185,7 @@ class ExitTab():
                     message=f"Material: {real_name}\nDomain: {item_cat}\nUnit: {unit}\nQuantity: {exit_qty}"
                 )
 
-                if tran_validate == True:
+                if tran_validate is True:
 
                     exit_data = {
                         "Date" : [date],
@@ -212,7 +217,7 @@ class ExitTab():
                     new_stk_df = pandas.DataFrame(new_stk_data)
 
                     try:
-                        exit_info = pandas.read_csv("./data/Exit.csv")
+                        pandas.read_csv("./data/Exit.csv")
                     except FileNotFoundError:
                         exit_df.to_csv("./data/Exit.csv", mode='a', index=False)
                     else:

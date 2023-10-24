@@ -1,14 +1,14 @@
-from functions import clear
-import pandas
-from tkinter import *
+from tkinter import Label, Entry, Listbox, Frame, END, Button, IntVar, Radiobutton
 from tkinter import messagebox
 import os
+import pandas
+from functions import clear
 
-
-selected = "" 
 BACKGROUND_COLOR = "#D3D3D3"
+FONT1 = ("Century Gothic", 12, "bold")
+FONT2 =("Century Gothic", 10, "bold")
 
-report_type = [("Entry Records", 1), ("Exit Records", 2), ("Ledger Records", 3), ("Current Stock Level", 4)]
+report_type = ["Entry Records", "Exit Records", "Ledger Records", "Current Stock Level"]
 
 class StockCheck():
     """This class is responsible for displaying the Stock Check sections and verifying the current quantity for each material"""
@@ -17,16 +17,16 @@ class StockCheck():
         self.frame = frame
         self.inventory_check()
 
-        self.check_label = Label(master=self.frame, text="Stock Check", font=("Century Gothic", 12, "bold"), bg=BACKGROUND_COLOR)
+        self.check_label = Label(master=self.frame, text="Stock Check", font=FONT1, bg=BACKGROUND_COLOR)
         self.check_label.place(x=10, y=50)
 
-        self.check_domain = Label(master=self.frame, text="Domain:", font=("Century Gothic", 10, "bold"), bg=BACKGROUND_COLOR)
+        self.check_domain = Label(master=self.frame, text="Domain:", font=FONT2, bg=BACKGROUND_COLOR)
         self.check_domain.place(x=15, y=80)
 
         self.check_domain_entry = Entry(master=self.frame, width=22)
         self.check_domain_entry.place(x=100, y=80)
 
-        self.check_qty = Label(master=self.frame, text="Quantity in stock:", font=("Century Gothic", 10, "bold"), bg=BACKGROUND_COLOR)
+        self.check_qty = Label(master=self.frame, text="Quantity in stock:", font=FONT2, bg=BACKGROUND_COLOR)
         self.check_qty.place(x=15, y=120)
 
         self.check_qty_entry = Entry(master=self.frame, width=10)
@@ -73,14 +73,12 @@ class StockCheck():
         - Loops through the stock data to update the quantity and inserts the domain and quantity of the selected material in their entries so that the current stock quantity can be known
         """
 
-        global selected
-
         clear(self.check_domain_entry, self.check_qty_entry)
 
         for _ in self.listbox3.curselection():
             selected = (self.listbox3.get(self.listbox3.curselection()))
 
-        for (index, row) in self.stock_data.iterrows():
+        for (_, row) in self.stock_data.iterrows():
 
             if row.Material == selected:
 
@@ -105,14 +103,14 @@ class Report():
         x_cor = 10
         y_cor = 50
 
-        for i in range(len(report_type)):
-            gen_radiobutton = Radiobutton(master=frame, text=report_type[i][0], value=report_type[i][1], variable=self.radio_state, font=("Century Gothic", 10, "bold"), bg=BACKGROUND_COLOR)
+        for i, report in enumerate(report_type, start=1):
+            gen_radiobutton = Radiobutton(master=frame, text=report, value=i, variable=self.radio_state, font=FONT2, bg=BACKGROUND_COLOR)
             gen_radiobutton.place(x=x_cor, y=y_cor)
             x_cor += 150
 
             self.rb_list.append(gen_radiobutton)
 
-        self.gen_excel_btn = Button(master=frame, text="EXPORT RECORDS TO MICROSOFT EXCEL",  font=("Century Gothic", 10, "bold"), command=self.generate_excel)
+        self.gen_excel_btn = Button(master=frame, text="EXPORT RECORDS TO MICROSOFT EXCEL",  font=FONT2, command=self.generate_excel)
         self.gen_excel_btn.place(x=225, y=120)
 
 
@@ -142,6 +140,5 @@ class Report():
             else:
                 data.to_excel(f"./reports/{record_type[radio_get]}.xlsx", index=False)
                 os.system(f'start "excel" "./reports/{record_type[radio_get]}.xlsx"')
-                
-            self.radio_state.set(-1)
 
+            self.radio_state.set(-1)

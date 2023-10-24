@@ -1,4 +1,4 @@
-from tkinter import *
+from tkinter import Label, Frame, Entry, Button, IntVar, Radiobutton, END
 from tkinter import messagebox
 import datetime
 from functions import clear, forget, get_values, Search
@@ -6,53 +6,57 @@ import pandas
 from auxillary_sec import StockCheck
 
 BACKGROUND_COLOR = "#949494"
+FONT1 = ("Century Gothic", 20, "bold")
+FONT2 = ("Century Gothic", 18, "bold")
+FONT3 = ("Century Gothic", 12, "bold")
+FONT4 = ("Century Gothic", 8, "bold")
 
-domain = [("Ceiling", 1), ("Equipments", 2),("Electricity", 3), ("Masonry", 4),("Plumbing", 5), ("Painting", 6), ("Scaffolding", 7),("Tiling" , 8), ("Waterproofing", 9), ("Others", 10)]
+domain = ["Ceiling", "Equipments", "Electricity", "Masonry", "Plumbing", "Painting", "Scaffolding", "Tiling", "Waterproofing", "Others"]
 
 class EntryTab():
-
+ 
     def __init__(self, frame:Frame, search:Search, update:StockCheck):
         
         self.find = search
         self.frame = frame
         self.update = update
 
-        self.entry_label = Label(master=self.frame, text="ENTRY", font=("Century Gothic", 20, "bold"), bg=BACKGROUND_COLOR)
+        self.entry_label = Label(master=self.frame, text="ENTRY", font=FONT1, bg=BACKGROUND_COLOR)
         self.entry_label.place(x=300, y=0)
 
-        self.domain_label = Label(master=self.frame, text="Domain", font=("Century Gothic", 18, "bold"), bg=BACKGROUND_COLOR)
+        self.domain_label = Label(master=self.frame, text="Domain", font=FONT2, bg=BACKGROUND_COLOR)
         self.domain_label.place(x=5, y=70)
 
         
-        self.item_label= Label(master=self.frame, text="Material", font=("Century Gothic", 12, "bold"), bg=BACKGROUND_COLOR)
+        self.item_label= Label(master=self.frame, text="Material", font=FONT3, bg=BACKGROUND_COLOR)
         self.item_label.place(x=138, y=175)
 
         self.item_entry = Entry(master=self.frame, width=40)
         self.item_entry.place(x=138, y=200)
 
-        self.units_label = Label(master=self.frame, text="Unit", font=("Century Gothic", 12, "bold"), bg=BACKGROUND_COLOR)
+        self.units_label = Label(master=self.frame, text="Unit", font=FONT3, bg=BACKGROUND_COLOR)
         self.units_label.place(x=135, y=235)
 
         self.units_entry = Entry(master=self.frame, width=12)
         self.units_entry.place(x=135, y=260)
 
-        self.qty_label = Label(master=self.frame, text="Qty", font=("Century Gothic", 12, "bold"), bg=BACKGROUND_COLOR)
+        self.qty_label = Label(master=self.frame, text="Qty", font=FONT3, bg=BACKGROUND_COLOR)
         self.qty_label.place(x=135, y=290)
 
         self.qty_entry = Entry(master=self.frame, width=10)
         self.qty_entry.place(x=135, y=315)
 
-        self.search_item_btn= Button(master=self.frame, text="click here to select material if already in stock", font=("Century Gothic", 8, "bold"), width=35, command=self.stock_search, fg="green")
+        self.search_item_btn= Button(master=self.frame, text="click here to select material if already in stock", font=FONT4, width=35, command=self.stock_search, fg="green")
         self.search_item_btn.place(x=380, y=450)
 
-        self.entry_cancel_btn = Button(master=self.frame, text="Cancel transaction",  font=("Century Gothic", 8, "bold"), width=35, command=self.entry_cancel_tran, fg="white", bg="green")
+        self.entry_cancel_btn = Button(master=self.frame, text="Cancel transaction",  font=FONT4, width=35, command=self.entry_cancel_tran, fg="white", bg="green")
         self.entry_cancel_btn.place(x=380, y=490)
 
-        self.validate_entry_btn= Button(master=self.frame, text="Validate Entry", font=("Century Gothic", 12, "bold"), width=27, command=self.validate_entry, fg="white", bg="green")
+        self.validate_entry_btn= Button(master=self.frame, text="Validate Entry", font=FONT3, width=27, command=self.validate_entry, fg="white", bg="green")
         self.validate_entry_btn.place(x=380, y=530)
 
-        self.select_btn = Button(master=self.frame, text="Select item", font=("Century Gothic", 8, "bold"), command=self.selected)
-        self.cancel_btn = Button(master=self.frame, text="Cancel", font=("Century Gothic", 8, "bold"), command=self.cancel_item_selection)
+        self.select_btn = Button(master=self.frame, text="Select item", font=FONT4, command=self.selected)
+        self.cancel_btn = Button(master=self.frame, text="Cancel", font=FONT4, command=self.cancel_item_selection)
 
         self.radio_state = IntVar(master=self.frame)
         x_n = 15
@@ -60,9 +64,8 @@ class EntryTab():
 
         self.radio_b_list = []
 
-        for set in domain:
-
-            radiobutton = Radiobutton(master=self.frame, text=set[0], value=set[1], variable=self.radio_state, bg=BACKGROUND_COLOR)
+        for i, sec in enumerate(domain, start=1):
+            radiobutton = Radiobutton(master=self.frame, text=sec, value=i, variable=self.radio_state, bg=BACKGROUND_COLOR)
             radiobutton.place(x=x_n, y=y_n)
             y_n += 40
             self.radio_b_list.append(radiobutton)
@@ -80,7 +83,7 @@ class EntryTab():
         clear(self.item_entry, self.units_entry, self.qty_entry)
 
         try:
-            stock_data = pandas.read_csv("./data/Stock_level.csv")
+            pandas.read_csv("./data/Stock_level.csv")
         except FileNotFoundError:
             messagebox.showinfo(
             title="Error",
@@ -108,16 +111,16 @@ class EntryTab():
     def selected(self):
         """Automatically inserts the material name, domain and unit to their respective entries"""
 
-        material, mat_domain, mat_unit, mat_qty = self.find.get_details()
+        material, mat_domain, mat_unit, _ = self.find.get_details()
 
         self.item_entry.insert(END, material[:-5])
         self.units_entry.insert(END, mat_unit)
 
         self.search_item_btn.config(state="active")
 
-        for i in range(len(domain)):
-            if domain[i][0] == mat_domain:
-                self.radio_state.set(domain[i][1])
+        for i, str_var in enumerate(domain, start=1):
+            if str_var == mat_domain:
+                self.radio_state.set(i)
 
         forget(self.find.listbox, self.cancel_btn, self.select_btn)
 
@@ -141,7 +144,7 @@ class EntryTab():
         current_time = datetime.datetime.now()
         date = current_time.strftime("%d-%b-%Y")
 
-        qty, item_cat = get_values(self.qty_entry, self.radio_state)
+        qty, item_cat, *_ = get_values(self.qty_entry, self.radio_state)
         category = domain[item_cat - 1]
         item_name = self.item_entry.get().title()
         stock_name = f"{item_name}[{category[0:3]}]"
@@ -175,8 +178,8 @@ class EntryTab():
                 message=f"Material: {item_name}\nDomain: {category}\nUnit: {unit}\nQuantity: {qty}"
                 )
 
-            if tran_validate == True:
-            
+            if tran_validate is True:
+
                 new_data = {
                     "Date" : [date],
                     "Time" : [f"{current_time.strftime('%H:%M:%S')}"],
@@ -196,8 +199,8 @@ class EntryTab():
                 new_stk_df = pandas.DataFrame(stk_data)
 
                 try:
-                    entry_data = pandas.read_csv("./data/Entries.csv")
-                    general_led_data = pandas.read_csv("./data/General_ledger.csv")
+                    pandas.read_csv("./data/Entries.csv")
+                    pandas.read_csv("./data/General_ledger.csv")
                     stock_data = pandas.read_csv("./data/Stock_level.csv")
                 except FileNotFoundError:
                     df.to_csv("./data/Entries.csv", mode='a', index=False)
